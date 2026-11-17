@@ -1,0 +1,4 @@
+* text=auto eol=lf
+*.cmd text eol=crlf
+# Keep audited upstream codec files byte-for-byte; their original whitespace is intentional provenance.
+native/wechat/packages/native-client-rust/crates/wechat-protocol/vendor/silk/** -whitespace

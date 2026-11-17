@@ -1,0 +1,9 @@
+{
+  "version": "1.3.2",
+  "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e",
+  "platform": "win32-x64",
+  "file": "wx-v1.3.2-win32-x64.exe",
+  "bytes": 31653888,
+  "sha256": "72e52265b161385cda44099c9ad660d5ce8693995f8e33b4b8aa94851ec01130",
+  "url": "https://github.com/thisnick/agent-wechat/releases/download/v1.3.2/wx-v1.3.2-win32-x64.exe"
+}

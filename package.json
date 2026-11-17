@@ -1,0 +1,78 @@
+{
+  "name": "yuxu-agent",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Yuxu: a social agent with long-term memory, evolving relationships and proactive conversation",
+  "engines": {
+    "node": ">=24.22.1 <25"
+  },
+  "scripts": {
+    "wechat": "node scripts/wechat.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "demo": "node scripts/demo.mjs",
+    "wechat:install": "node scripts/install-wechat.mjs",
+    "wechat:demo": "node scripts/demo-wechat.mjs",
+    "wechat:watch": "node scripts/watch-wechat.mjs",
+    "wechat:watch:capture": "node scripts/watch-wechat-capture.mjs",
+    "wechat:drafts": "node scripts/drafts.mjs",
+    "sticker:send": "node scripts/sticker-send.mjs",
+    "intimacy": "node scripts/intimacy.mjs",
+    "voice:install": "node scripts/voice-install.mjs",
+    "trends": "node scripts/trends.mjs",
+    "trends:worker": "node scripts/trends-worker.mjs",
+    "memory": "node scripts/memory.mjs",
+    "moments:probe": "node scripts/moments-live-probe.mjs",
+    "moments:read": "node scripts/moments-read.mjs",
+    "moments:comment": "node scripts/moments-comment.mjs",
+    "moments:worker": "node scripts/moments-worker.mjs",
+    "memory:local": "node scripts/memory-local.mjs",
+    "diary:local": "node scripts/diary-local.mjs",
+    "diary:worker": "node scripts/diary-worker.mjs",
+    "api:usage": "node scripts/api-usage.mjs",
+    "wechat:participate": "node scripts/participation-worker.mjs",
+    "participation:feedback": "node scripts/participation-feedback.mjs",
+    "embedding:serve": "node scripts/embedding-server.mjs",
+    "wechat:watch:memory": "node scripts/watch-wechat-memory.mjs",
+    "wechat:watch:diary": "node scripts/watch-wechat-diary.mjs",
+    "wechat:test": "node --test tests/wechat-adapter.test.mjs",
+    "harness:version": "dsh --version",
+    "setup": "node scripts/setup.mjs",
+    "start": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/startup/start-agent.ps1",
+    "start:check": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/startup/start-agent.ps1 -Check",
+    "wechat:build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/build-native.ps1",
+    "launchers:build": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/build-launchers.ps1",
+    "release:check": "node scripts/release-check.mjs"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh": "0.2.2-alpha.2",
+    "@deepseek-ai/dsh-agent": "0.2.2-alpha.2",
+    "@deepseek-ai/dsh-llm": "0.2.2-alpha.2",
+    "@deepseek-ai/dsh-llm-deepseek-api-key": "0.2.2-alpha.2",
+    "@deepseek-ai/dsh-sdk-client": "0.2.2-alpha.2",
+    "@deepseek-ai/dsh-session": "0.2.2-alpha.2",
+    "@deepseek-ai/dsh-tools": "0.2.2-alpha.2",
+    "@huggingface/transformers": "3.8.1",
+    "better-sqlite3": "12.11.1",
+    "mem0ai": "3.3.1",
+    "sharp": "0.35.5"
+  },
+  "devDependencies": {
+    "pnpm": "11.28.5"
+  },
+  "license": "MIT",
+  "optionalDependencies": {
+    "sherpa-onnx-node": "1.13.8"
+  },
+  "allowScripts": {
+    "@deepseek-ai/dsh-subprocess-local@0.2.2-alpha.2": true,
+    "@google/genai@2.21.0": true,
+    "sharp@0.34.5": true,
+    "sharp@0.35.5": true,
+    "better-sqlite3@12.11.1": true,
+    "koffi@3.1.1": true,
+    "node-pty@1.2.0-beta.15": true,
+    "onnxruntime-node@1.21.0": true,
+    "protobufjs@7.6.6": true
+  }
+}

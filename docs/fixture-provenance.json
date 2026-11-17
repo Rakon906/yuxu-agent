@@ -1,0 +1,57 @@
+[
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-core/tests/fixtures/send-images/50mp-baseline.jpg.zst",
+    "sha256": "30418ad1a27181a7ffda8cb96a6d2a37a0853ebbbc157995ca67151efed196c6",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-core/tests/fixtures/send-images/50mp-gray.jpg.zst",
+    "sha256": "e029998f131038d44f5d9fb121ec98b7bb9818cc2bdf67073b7abcf112fa0816",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-core/tests/fixtures/send-images/50mp-progressive.jpg.zst",
+    "sha256": "c1f93fa6226feea10f2876ad831217d136874a1d1fd6bbaba58419505e8ebd74",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-core/tests/fixtures/send-videos/legacy-mjpeg.mov",
+    "sha256": "a5bfa72b32041a99cb56f8a004b66b3ce47dc55eba9bc5e3560b1df8dc2b1002",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-media/tests/fixtures/progressive.jpg",
+    "sha256": "5fbcd4d42f6320b1710e617cd9de7357dfa533ebd38a1acf72bf09688ca5c098",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-media/tests/fixtures/static.wxgf",
+    "sha256": "02c521b68bc9f8b0c99fa70f1e308f67fe0a5f60ff5b695b450c7b532df40fbb",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-media/tests/fixtures/two-frame.webp",
+    "sha256": "b168266793e62b4f3363dc6bd48a1081ccfd75d5eb4be4937baae93017f864f7",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-profile/tests/fixtures/static.wxgf",
+    "sha256": "02c521b68bc9f8b0c99fa70f1e308f67fe0a5f60ff5b695b450c7b532df40fbb",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-profile/tests/fixtures/two-frame.webp",
+    "sha256": "b168266793e62b4f3363dc6bd48a1081ccfd75d5eb4be4937baae93017f864f7",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-simulator/fixtures/sample.mp4",
+    "sha256": "68afb4db74144435a69d19d5e9f44e9fbcb7bce42ac6e122e405611432f7bf93",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  },
+  {
+    "path": "native/wechat/packages/native-client-rust/crates/wechat-simulator/fixtures/sticker.gif",
+    "sha256": "f8313d5490f85144aa93c1d11ddea60b6c8d86cdcfcaff4db3e2e3ac9df94350",
+    "sourceCommit": "13390d7c5f5924f3cfe67a8e5a4dc51dc86c179e"
+  }
+]
