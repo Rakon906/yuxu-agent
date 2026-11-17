@@ -1,12 +1,26 @@
-# 鱼叙 Yuxu
+<p align="center">
+  <img src="docs/assets/feiyu-avatar.webp" width="220" height="220" alt="肥鱼不肥的角色头像：穿着白蓝色小鱼连帽衫的女生" />
+</p>
+
+<h1 align="center">鱼叙 Yuxu</h1>
+
+<p align="center"><strong>会聊天，也会慢慢熟悉你。</strong></p>
+<p align="center">长期记忆 · 人物关系 · 自主参与</p>
+<p align="center">
+  <a href="#先运行离线演示">快速开始</a> ·
+  <a href="docs/configuration.md">配置指南</a> ·
+  <a href="docs/features.md">功能边界</a>
+</p>
 
 一个具有长期记忆、人物关系和自主参与能力的微信群聊 Agent。默认角色是“肥鱼不肥”，可以替换人设，也可以接入自己的云端或本地模型。
 
-这是待发布的源码候选版，不包含开发者的微信账号、聊天记录、Cookie、API Key、人物档案、图片素材或旧 Git 历史。每位使用者需要配置自己的账号和模型服务。
+这是公开源码版本，包含代码、合成测试样例与展示素材。开发者的微信账号、聊天记录、Cookie、API Key、人物档案、私人图库和旧项目 Git 历史不随仓库发布。每位使用者需要配置自己的账号和模型服务。
 
 应用层离线测试和当前 Windows 原生测试已通过，干净目录的安装、演示与启动器也已验证。具体结果和平台边界见[验证记录](docs/validation.md)；离线验证不替代使用者自己账号的真实登录和收发验收。
 
 ## 功能
+
+![鱼叙功能概览：自然参与、长期记忆、人物关系、多媒体理解、微信互动和模型配置](docs/assets/yuxu-overview.svg)
 
 | 模块 | 内容 |
 | --- | --- |

@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="610" viewBox="0 0 1200 610" role="img" aria-labelledby="title description">
+  <title id="title">鱼叙 Yuxu 功能概览</title>
+  <desc id="description">六项能力：自然参与、长期记忆、人物关系、多媒体理解、微信互动，以及云端和本地模型配置。</desc>
+  <defs>
+    <linearGradient id="background" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#eef8ff"/>
+      <stop offset="1" stop-color="#f6f5ff"/>
+    </linearGradient>
+    <symbol id="chat" viewBox="0 0 28 28">
+      <path d="M6 5h16a3 3 0 0 1 3 3v10a3 3 0 0 1-3 3h-9l-6 4v-4H6a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3Z"/>
+      <path d="M8 11h12M8 15h8"/>
+    </symbol>
+    <symbol id="memory" viewBox="0 0 28 28">
+      <path d="M5 3h16a2 2 0 0 1 2 2v20H7a4 4 0 0 1-4-4V5a2 2 0 0 1 2-2Z"/>
+      <path d="M3 21a4 4 0 0 1 4-4h16M9 8h8M9 12h5"/>
+    </symbol>
+    <symbol id="people" viewBox="0 0 28 28">
+      <circle cx="10" cy="9" r="4"/>
+      <path d="M2 25v-4a8 8 0 0 1 16 0v4M19 5a4 4 0 0 1 0 8M21 17a6 6 0 0 1 5 6v2"/>
+    </symbol>
+    <symbol id="media" viewBox="0 0 28 28">
+      <rect x="3" y="4" width="22" height="20" rx="3"/>
+      <circle cx="10" cy="10" r="2"/>
+      <path d="m4 21 6-6 5 5 4-9 6 10"/>
+    </symbol>
+    <symbol id="social" viewBox="0 0 28 28">
+      <path d="M14 24S3 17 3 10a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 7-11 14-11 14Z"/>
+      <path d="M10 12h8M14 8v8"/>
+    </symbol>
+    <symbol id="models" viewBox="0 0 28 28">
+      <rect x="10" y="10" width="8" height="8" rx="2"/>
+      <circle cx="5" cy="5" r="3"/><circle cx="23" cy="5" r="3"/>
+      <circle cx="5" cy="23" r="3"/><circle cx="23" cy="23" r="3"/>
+      <path d="m7 7 4 4m6 0 4-4M7 21l4-4m6 0 4 4"/>
+    </symbol>
+    <style>
+      text { font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif; }
+      .label { fill: #477694; font-size: 14px; font-weight: 600; letter-spacing: 3px; }
+      .heading { fill: #18384b; font-size: 32px; font-weight: 700; }
+      .title { fill: #23495e; font-size: 24px; font-weight: 700; }
+      .body { fill: #527084; font-size: 16px; }
+      .card { fill: #fff; stroke: #dae9f2; stroke-width: 1.5; }
+      .icon { fill: none; stroke: #4b91b4; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+      .foot { fill: #688498; font-size: 14px; }
+    </style>
+  </defs>
+  <rect x="1" y="1" width="1198" height="608" rx="26" fill="url(#background)" stroke="#e0eaf2"/>
+  <text x="48" y="48" class="label">YUXU / CAPABILITIES</text>
+  <text x="48" y="98" class="heading">从一句聊天，到慢慢熟悉彼此</text>
+  <g transform="translate(1020 52)" fill="none" stroke="#bad9eb" stroke-width="2">
+    <path d="M0 20C20-8 52-8 72 20 52 48 20 48 0 20Zm72 0 30-18v36Z"/>
+    <circle cx="24" cy="16" r="2" fill="#91bed7" stroke="none"/>
+    <circle cx="-18" cy="2" r="6"/><circle cx="-35" cy="-17" r="4"/>
+  </g>
+  <g transform="translate(48 140)">
+    <rect class="card" width="352" height="190" rx="18"/>
+    <rect x="24" y="24" width="44" height="44" rx="13" fill="#edf7fc"/>
+    <use class="icon" href="#chat" x="33" y="32" width="26" height="26"/>
+    <text x="84" y="54" class="title">自然参与</text>
+    <text x="24" y="109" class="body">参与判断 · 主动话题 · 点名回应</text>
+    <text x="24" y="141" class="body">发送前复核，减少重复和抢话</text>
+  </g>
+  <g transform="translate(424 140)">
+    <rect class="card" width="352" height="190" rx="18"/>
+    <rect x="24" y="24" width="44" height="44" rx="13" fill="#edf7fc"/>
+    <use class="icon" href="#memory" x="33" y="32" width="26" height="26"/>
+    <text x="84" y="54" class="title">长期记忆</text>
+    <text x="24" y="109" class="body">滚动日记 · 核心事实 · 按需检索</text>
+    <text x="24" y="141" class="body">把聊天整理成有来源的长期记忆</text>
+  </g>
+  <g transform="translate(800 140)">
+    <rect class="card" width="352" height="190" rx="18"/>
+    <rect x="24" y="24" width="44" height="44" rx="13" fill="#edf7fc"/>
+    <use class="icon" href="#people" x="33" y="32" width="26" height="26"/>
+    <text x="84" y="54" class="title">人物关系</text>
+    <text x="24" y="109" class="body">成员身份 · 称呼偏好 · 关系观察</text>
+    <text x="24" y="141" class="body">逐渐积累人物画像和共同兴趣</text>
+  </g>
+  <g transform="translate(48 354)">
+    <rect class="card" width="352" height="190" rx="18"/>
+    <rect x="24" y="24" width="44" height="44" rx="13" fill="#f1effc"/>
+    <use class="icon" href="#media" x="33" y="32" width="26" height="26"/>
+    <text x="84" y="54" class="title">多媒体理解</text>
+    <text x="24" y="109" class="body">图片与表情 · 语音 · 短视频</text>
+    <text x="24" y="141" class="body">结合分享正文与合并转发接话</text>
+  </g>
+  <g transform="translate(424 354)">
+    <rect class="card" width="352" height="190" rx="18"/>
+    <rect x="24" y="24" width="44" height="44" rx="13" fill="#f1effc"/>
+    <use class="icon" href="#social" x="33" y="32" width="26" height="26"/>
+    <text x="84" y="54" class="title">微信互动</text>
+    <text x="24" y="109" class="body">文字与引用 · 表情语音 · 拍一拍</text>
+    <text x="24" y="141" class="body">朋友圈图文发布、点赞和评论</text>
+  </g>
+  <g transform="translate(800 354)">
+    <rect class="card" width="352" height="190" rx="18"/>
+    <rect x="24" y="24" width="44" height="44" rx="13" fill="#f1effc"/>
+    <use class="icon" href="#models" x="33" y="32" width="26" height="26"/>
+    <text x="84" y="54" class="title">模型自由搭配</text>
+    <text x="24" y="109" class="body">云端 API · 本地模型 · 调用统计</text>
+    <text x="24" y="141" class="body">按能力配置服务，保留使用记录</text>
+  </g>
+  <text x="48" y="582" class="foot">默认角色：肥鱼不肥</text>
+  <text x="1152" y="582" class="foot" text-anchor="end">按需配置 · 记忆保存在本地 · 支持替换人设</text>
+</svg>
