@@ -25,7 +25,7 @@ Windows 启动器由 `tools/startup/Program.cs` 和 `tools/wechat-start/Program.
 
 开发验证：
 
-媒体测试还需要 `ffmpeg` 和 `ffprobe` 均在 PATH 中。仅安装 FFmpeg 可执行文件而没有 FFprobe 时，视频测试会报 `media_encoder_unavailable`。本次完整测试的结果和后续定向复测见 [验证记录](validation.md)；目前不是所有原生测试均已通过。
+媒体测试还需要 `ffmpeg` 和 `ffprobe` 均在 PATH 中。仅安装 FFmpeg 可执行文件而没有 FFprobe 时，视频测试会报 `media_encoder_unavailable`。本次 Windows 测试结果见 [验证记录](validation.md)。Linux 专用的官方客户端接管成功用例在 Linux 执行；Windows 验证其拒绝操作和保留资料的行为。
 
 ```powershell
 cargo fmt --all --check --manifest-path native/wechat/packages/native-client-rust/Cargo.toml

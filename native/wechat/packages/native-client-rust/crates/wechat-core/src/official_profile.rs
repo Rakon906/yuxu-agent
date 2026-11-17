@@ -536,13 +536,19 @@ mod tests {
     fn discovery_requires_a_single_profile_and_accepts_explicit_spellings() {
         let temp = tempfile::tempdir().unwrap();
         let account = home(temp.path(), "synthetic_self");
-        assert_eq!(selected_home(temp.path(), false).unwrap().0, temp.path());
+        assert_eq!(
+            selected_home(temp.path(), false).unwrap().0,
+            std::fs::canonicalize(temp.path()).unwrap()
+        );
         for path in [
             temp.path().to_path_buf(),
             temp.path().join("xwechat_files"),
             account,
         ] {
-            assert_eq!(selected_home(&path, true).unwrap().0, temp.path());
+            assert_eq!(
+                selected_home(&path, true).unwrap().0,
+                std::fs::canonicalize(temp.path()).unwrap()
+            );
         }
         std::fs::create_dir_all(temp.path().join("xwechat_files/other/db_storage")).unwrap();
         assert_eq!(
@@ -552,6 +558,32 @@ mod tests {
         assert!(selected_home(Path::new("relative"), true).is_err());
         assert!(selected_home(&temp.path().join("missing"), true).is_err());
     }
+    #[cfg(not(target_os = "linux"))]
+    #[tokio::test]
+    async fn official_takeover_is_rejected_without_changing_profile_or_accounts() {
+        let temp = tempfile::tempdir().unwrap();
+        let official = temp.path().join("home");
+        home(&official, "synthetic_self");
+        let before = wechat_store::copy::inventory(&official).unwrap();
+        let store = Arc::new(Store::open(&temp.path().join("data")).unwrap());
+        let core = Core::new(store.clone(), None).unwrap();
+        core.configure_profile_format_key(&[9; 16]).unwrap();
+        let error = core
+            .prepare_official_profile(OfficialProfileRequest {
+                path: Some(official.to_str().unwrap().into()),
+                account_id: None,
+            })
+            .await
+            .err()
+            .expect("official takeover must be rejected on unsupported platforms");
+        assert!(error
+            .to_string()
+            .starts_with("official_profile_host_unsupported"));
+        assert!(store.accounts().unwrap().is_empty());
+        assert_eq!(before, wechat_store::copy::inventory(&official).unwrap());
+    }
+
+    #[cfg(target_os = "linux")]
     #[tokio::test]
     async fn accepted_identity_derives_existing_database_keys_without_replacing_files() {
         let temp = tempfile::tempdir().unwrap();
@@ -635,6 +667,7 @@ mod tests {
         assert!(prior_keys.is_file());
         assert_eq!(expanded, wechat_store::copy::inventory(&official).unwrap());
     }
+    #[cfg(target_os = "linux")]
     #[tokio::test]
     async fn saved_files_override_stale_sidecar_but_not_an_unpublished_native_generation() {
         use wechat_protocol::protobuf as p;
@@ -728,6 +761,7 @@ mod tests {
             .unwrap()
             .is_none());
     }
+    #[cfg(target_os = "linux")]
     #[tokio::test]
     async fn selection_is_idempotent_exclusive_and_never_imports_active_authorization() {
         let temp = tempfile::tempdir().unwrap();

@@ -3,7 +3,7 @@ use rusqlite::{params, Connection};
 use std::fs;
 use wechat_profile::*;
 fn fixture() -> tempfile::TempDir {
-    let d = tempfile::tempdir().unwrap();
+    let d = tempfile::tempdir_in(fs::canonicalize(std::env::temp_dir()).unwrap()).unwrap();
     let root = d.path();
     let global = root.join("xwechat_files/all_users/config");
     fs::create_dir_all(&global).unwrap();

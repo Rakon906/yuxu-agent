@@ -172,7 +172,16 @@ fn open_cache(
     relative: &Path,
     max: usize,
 ) -> Result<(fs::File, fs::Metadata, std::path::PathBuf)> {
-    if !crate::keys::valid_relative_path(relative.to_str().ok_or(ProfileError::InvalidMetadata)?) {
+    let relative_text = relative.to_str().ok_or(ProfileError::InvalidMetadata)?;
+    // Internally joined paths use native separators. Validate their portable
+    // spelling without removing parent components or accepting Windows streams.
+    #[cfg(windows)]
+    let portable_text = relative_text.replace('\\', "/");
+    #[cfg(windows)]
+    let relative_text = portable_text.as_str();
+    if !crate::keys::valid_relative_path(relative_text)
+        || (cfg!(windows) && relative_text.contains(':'))
+    {
         return Err(ProfileError::InvalidMetadata);
     }
     let mut here = root.to_path_buf();
@@ -1881,6 +1890,47 @@ pub fn cache_hardlink_media_projection(
 #[cfg(test)]
 mod cache_limit_tests {
     use super::*;
+    #[test]
+    fn native_cache_paths_preserve_traversal_and_link_guards() {
+        let dir = tempfile::tempdir().unwrap();
+        let relative = Path::new("msg").join("file").join("sample.bin");
+        fs::create_dir_all(dir.path().join("msg/file")).unwrap();
+        fs::write(dir.path().join(&relative), b"cached payload").unwrap();
+        assert_eq!(
+            read_cache(dir.path(), &relative, 64).unwrap(),
+            b"cached payload"
+        );
+        for invalid in [Path::new("../outside"), Path::new("/absolute")] {
+            assert!(matches!(
+                read_cache(dir.path(), invalid, 64),
+                Err(ProfileError::InvalidMetadata)
+            ));
+        }
+        #[cfg(windows)]
+        for invalid in [
+            r"msg\..\outside",
+            r"msg\file\sample.bin:stream",
+            r"C:\outside",
+        ] {
+            assert!(matches!(
+                read_cache(dir.path(), Path::new(invalid), 64),
+                Err(ProfileError::InvalidMetadata)
+            ));
+        }
+        #[cfg(unix)]
+        {
+            std::os::unix::fs::symlink(dir.path().join(&relative), dir.path().join("link"))
+                .unwrap();
+            assert!(matches!(
+                read_cache(dir.path(), Path::new("link"), 64),
+                Err(ProfileError::UnsupportedFile)
+            ));
+            assert!(matches!(
+                read_cache(dir.path(), Path::new(r"msg\file\sample.bin"), 64),
+                Err(ProfileError::InvalidMetadata)
+            ));
+        }
+    }
     #[test]
     fn only_ordinary_file_namespaces_receive_the_larger_limit() {
         assert_eq!(hardlink_limit(HardlinkKind::File), 536_870_912);

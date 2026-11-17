@@ -75,7 +75,9 @@ pub(super) fn read_saved_file(
     Ok(bytes)
 }
 fn require_saved_login_store(binding: &IdentityBinding) -> Result<()> {
-    if binding.relative != "xwechat_files/all_users/config/global_config" {
+    if std::path::Path::new(&binding.relative)
+        != std::path::Path::new("xwechat_files/all_users/config/global_config")
+    {
         bail!("saved_login_store_unsupported");
     }
     Ok(())
@@ -464,10 +466,23 @@ mod tests {
             format_key: vec![9; 16],
         };
         require_saved_login_store(&binding).unwrap();
+        let native = IdentityBinding {
+            relative: std::path::Path::new("xwechat_files")
+                .join("all_users")
+                .join("config")
+                .join("global_config")
+                .to_str()
+                .unwrap()
+                .into(),
+            format_key: vec![9; 16],
+        };
+        require_saved_login_store(&native).unwrap();
         for relative in [
             "xwechat_files/all_users/config/other",
             "xwechat_files/synthetic/config/login_configv2",
             "../global_config",
+            "xwechat_files/all_users/../config/global_config",
+            "/xwechat_files/all_users/config/global_config",
         ] {
             let binding = IdentityBinding {
                 relative: relative.into(),

@@ -138,8 +138,7 @@ impl Family {
 }
 fn retain_recovery(original: &Path, parent: &Path) -> Result<PathBuf> {
     let path = original.join("database.sqlite");
-    let family = Family::read(&path)?;
-    let digest = family.digest(&path)?;
+    let digest = Family::read(&path)?.digest(&path)?;
     let destination = parent.join(format!(".sqlite-recovery-{digest}"));
     if destination.try_exists()? {
         ensure!(
@@ -224,6 +223,10 @@ pub(crate) fn open_prepared<T>(
     let retain_unverified = wal::validate(&copied)?;
     let probe = validation.join("database.sqlite");
     copied.copy_to(&saved, &probe)?;
+    // Close handles to the owned backup before publishing its directory.
+    // Windows cannot rename that directory while these child files are open.
+    // The separate handles to the original database remain held and checked.
+    drop(copied);
     wechat_platform::sync_dir(scratch.path())?;
     wechat_platform::sync_dir(parent)?;
     let validate = || -> Result<()> {

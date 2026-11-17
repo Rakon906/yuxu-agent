@@ -4,7 +4,7 @@ use sha2::{Digest, Sha256};
 #[cfg(unix)]
 use std::os::unix::fs::PermissionsExt;
 use std::{
-    fs::{self, File},
+    fs,
     io::Read,
     path::{Path, PathBuf},
 };
@@ -275,7 +275,7 @@ fn copy_inner(
             if target.is_dir() {
                 wechat_platform::sync_dir(&target)?;
             } else {
-                File::open(&target)?.sync_all()?;
+                wechat_platform::sync_file(&target)?;
             }
         }
     }

@@ -296,6 +296,9 @@ pub(super) fn publish_routing(
 #[cfg(test)]
 mod tests {
     use super::*;
+    fn canonical_tempdir() -> tempfile::TempDir {
+        tempfile::tempdir_in(std::fs::canonicalize(std::env::temp_dir()).unwrap()).unwrap()
+    }
     fn options() -> wechat_profile::WriteOptions {
         wechat_profile::WriteOptions {
             exclusive_ownership_confirmed: true,
@@ -305,7 +308,7 @@ mod tests {
     }
     #[test]
     fn fresh_routing_replays_after_a_fence_between_xml_and_selector() {
-        let temp = tempfile::tempdir().unwrap();
+        let temp = canonical_tempdir();
         let plan = plan_routing(temp.path(), "sglong.wechat.com", "sgshort.wechat.com").unwrap();
         let mut commits = 0;
         assert!(publish_routing(temp.path(), &plan, &options(), || {
@@ -352,7 +355,7 @@ mod tests {
     }
     #[test]
     fn routing_preserves_other_services_and_selected_ini_and_refuses_changed_sources() {
-        let temp = tempfile::tempdir().unwrap();
+        let temp = canonical_tempdir();
         let root = temp.path().join(HOST_ROOT);
         std::fs::create_dir_all(root.join("selected")).unwrap();
         let ini = "[unrelated]\nvalue=opaque\n[default]\nlast_key=selected\n";
@@ -389,7 +392,7 @@ mod tests {
     }
     #[test]
     fn routing_adds_missing_pair_and_rejects_redirected_ancestors_and_ownership() {
-        let temp = tempfile::tempdir().unwrap();
+        let temp = canonical_tempdir();
         let root = temp.path().join(HOST_ROOT);
         std::fs::create_dir_all(&root).unwrap();
         let xml = "<hosts><!--unknown--><mapping src='localhost' redirect='localhost'/></hosts>";
@@ -408,7 +411,7 @@ mod tests {
             .contains("<!--unknown--><mapping src='localhost' redirect='localhost'/>"));
         #[cfg(unix)]
         {
-            let alias = tempfile::tempdir().unwrap();
+            let alias = canonical_tempdir();
             std::os::unix::fs::symlink(temp.path().join(".xwechat"), alias.path().join(".xwechat"))
                 .unwrap();
             assert!(plan_routing(alias.path(), "sglong.wechat.com", "sgshort.wechat.com").is_err());
@@ -416,7 +419,7 @@ mod tests {
     }
     #[test]
     fn saved_routing_uses_selected_native_files_and_rejects_unsafe_or_ambiguous_pairs() {
-        let temp = tempfile::tempdir().unwrap();
+        let temp = canonical_tempdir();
         assert!(saved_business_hosts(temp.path()).unwrap().is_none());
         let root = temp.path().join(".xwechat/net/host");
         std::fs::create_dir_all(&root).unwrap();

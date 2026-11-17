@@ -1,4 +1,9 @@
 use wechat_profile::*;
+
+// Guarded publication intentionally requires a canonical parent directory.
+fn canonical_tempdir() -> tempfile::TempDir {
+    tempfile::tempdir_in(std::fs::canonicalize(std::env::temp_dir()).unwrap()).unwrap()
+}
 #[test]
 fn append_identity_cursor_unknown_fields_and_tombstones_roundtrip() {
     let k = [9; 16];
@@ -121,7 +126,7 @@ fn full_store_grows_without_losing_unknown_records_and_recovers_data_first() {
         Some(&[6; 3800][..])
     );
     assert!(!old_view.contains("saved-login-refresh"));
-    let dir = tempfile::tempdir().unwrap();
+    let dir = canonical_tempdir();
     let path = dir.path().join("global_config");
     std::fs::write(&path, old.data()).unwrap();
     std::fs::write(path.with_extension("crc"), old.metadata()).unwrap();
@@ -169,7 +174,7 @@ fn full_store_grows_without_losing_unknown_records_and_recovers_data_first() {
 fn publish_recovers_data_first_interruption_and_rejects_unexpected_generation() {
     let k = [9; 16];
     let seed = create_mmkv_v4(&k, [7; 16], 4096).unwrap();
-    let d = tempfile::tempdir().unwrap();
+    let d = canonical_tempdir();
     let p = d.path().join("store");
     let m = d.path().join("store.crc");
     std::fs::write(&p, seed.data()).unwrap();
@@ -204,7 +209,7 @@ fn publish_recovers_data_first_interruption_and_rejects_unexpected_generation() 
 }
 #[test]
 fn create_pair_is_noclobber_and_recovers_only_its_exact_partial_generation() {
-    let d = tempfile::tempdir().unwrap();
+    let d = canonical_tempdir();
     let path = d.path().join("login_configv2");
     let seed = create_mmkv_v4(&[7; 16], [2; 16], 4096).unwrap();
     let options = WriteOptions {
@@ -244,7 +249,7 @@ fn create_pair_is_noclobber_and_recovers_only_its_exact_partial_generation() {
 fn append_authorization_fence_is_checked_before_each_file_and_partial_replays() {
     let key = [9; 16];
     let seed = create_mmkv_v4(&key, [7; 16], 4096).unwrap();
-    let dir = tempfile::tempdir().unwrap();
+    let dir = canonical_tempdir();
     let path = dir.path().join("store");
     let meta = path.with_extension("crc");
     std::fs::write(&path, seed.data()).unwrap();

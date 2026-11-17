@@ -59,7 +59,10 @@ fn direct_attach_preserves_source_and_persists_binding_without_copy() {
     drop(store);
     let store = Store::open(&root).unwrap();
     assert_eq!(store.server_id, id);
-    assert_eq!(store.accounts().unwrap()[0].profile_path, source);
+    assert_eq!(
+        store.accounts().unwrap()[0].profile_path,
+        fs::canonicalize(source).unwrap()
+    );
 }
 #[test]
 fn ownership_conflicts_and_shared_profile_leases_are_detected() {

@@ -20,7 +20,17 @@ $running = @(Get-CimInstance Win32_Process -Filter "Name='wx.exe'" | Where-Objec
 if ($running.Count) { throw 'This installation is running. Stop its daemon before replacing its executable.' }
 New-Item -ItemType Directory -Force -Path (Split-Path -Parent $destination) | Out-Null
 Copy-Item -LiteralPath $built -Destination $destination -Force
-$hash = (Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant()
+# Use built-in runtime hashing so npm-launched builds do not depend on a
+# PowerShell module exporting the Get-FileHash command.
+$hashAlgorithm = [System.Security.Cryptography.SHA256]::Create()
+$stream = $null
+try {
+    $stream = [System.IO.File]::OpenRead($destination)
+    $hash = [System.BitConverter]::ToString($hashAlgorithm.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()
+} finally {
+    if ($stream) { $stream.Dispose() }
+    $hashAlgorithm.Dispose()
+}
 [pscustomobject]@{ engine = 'Yuxu customized native engine'; sha256 = $hash; builtAt = (Get-Date).ToString('o') } |
     ConvertTo-Json | Set-Content -LiteralPath (Join-Path (Split-Path -Parent $destination) 'build-info.json') -Encoding UTF8
 Write-Host "Built local engine: $destination"

@@ -1,47 +1,46 @@
 # 源码候选版验证记录
 
-日期：2026-11-17。环境：Windows x64、Node.js 24.22.2、Rust 1.93.1 GNU。所有运行数据、缓存、构建产物和完整日志保留在本地忽略目录，不随源码分发。
+日期：2026-11-17。环境：Windows x64、Node.js 24.22.2、Rust 1.93.1 GNU、FFmpeg 9.0.2。FFprobe 使用核对下载完整性的 `@ffprobe-installer/win32-x64@5.1.0`。完整日志、工具及临时数据库保存在本地忽略目录，不随源码分发。
 
-## 已通过
+## 当前结果
 
 | 检查 | 实际结果 |
 | --- | --- |
-| `npm.cmd ci` | 在独立目录安装锁定依赖成功 |
-| `npm.cmd test` | 802 项通过，0 失败，0 跳过；包括模拟接口、群隔离、记忆、媒体、启动和配置测试 |
-| `npm.cmd run demo` | 离线 Harness 工具执行正常，新进程恢复历史得到 `RESTORED_MARKER_FOUND` |
-| `npm.cmd run launchers:build` | 两个 Windows 启动器构建成功；微信启动器自检通过 |
-| `npm.cmd run wechat:build` | 定制原生引擎 release 构建成功；`wx --version` 和 `wx --help` 可以执行 |
-| Rust 格式和静态检查 | 最终 `cargo fmt --all --check` 与 `cargo clippy --workspace --all-targets --locked -- -D warnings` 均通过（均指定源码工作区的 manifest） |
-| 隐私检查 | 通用扫描及本地已知身份、已知密钥、聊天原文对照未发现匹配；这不等于数学意义上的无泄露证明 |
-| 测试素材来源 | 11 个二进制样例逐字节匹配公开上游；141 个 SILK 源文件保留公开上游原文 |
+| 干净目录 `npm.cmd ci` | 成功安装锁定依赖，未复制原安装的 node_modules、配置或运行数据库 |
+| 干净目录 `npm.cmd run demo` | 工具调用成功，新进程恢复得到 `RESTORED_MARKER_FOUND` |
+| 干净目录 `npm.cmd test` | 默认环境 800 通过、0 失败、2 跳过；按文档安装可选媒体依赖后 802 通过、0 失败、0 跳过 |
+| 干净目录 `npm.cmd run wechat:build` | Release 构建成功；产物 `--version`、`--help` 正常，构建记录中的 SHA-256 与独立计算一致 |
+| `npm.cmd run launchers:build` | 两个 Windows 启动器构建成功，微信启动器 `--self-test` 通过 |
+| `npm.cmd run setup -- --account account-example --group 10001@chatroom` | 在新目录生成空的合成账号/群配置，没有执行登录或发送 |
+| 原生工作区完整测试 | 791 通过、0 失败、1 忽略，34 个测试目标及文档测试汇总，命令退出码 0 |
+| Rust 格式和静态检查 | `cargo fmt --all --check`、全工作区全目标 `cargo clippy ... -- -D warnings` 通过 |
 
-应用层完整测试前已在忽略目录安装可选语音依赖并配置 FFmpeg。未安装可选组件时，某些媒体测试可能跳过，不能直接复用这里的零跳过结论。模型接口使用模拟服务；本次没有调用真实模型、登录微信、发消息或操作朋友圈。
-
-## 原生测试尚未全部通过
-
-执行：
+原生完整测试命令：
 
 ```powershell
 cargo test --workspace --no-fail-fast --locked --manifest-path native/wechat/packages/native-client-rust/Cargo.toml -- --test-threads=4
 ```
 
-首次可完整执行的全量结果为 **765 通过、27 失败、1 忽略**。忽略项沿用现有测试标记；Unix 专用权限和符号链接断言只在 Unix 编译，跨平台部分保留。失败目标为：
+唯一未运行项是原有的 `history_latency_benchmark`，需要安静的 release 构建环境单独测量时延。三个 Linux 官方客户端接管成功用例按平台编译；Windows 新增对应的拒绝操作测试，核对账号列表和原文件未被改变。不能将 Windows 结果等同于已验证 Linux/macOS。
 
-- `wechat-core --lib`：12 项，涉及视频依赖、路径规范化、保存登录资料以及官方客户端接管。
-- `wechat-profile --test login_storage`：1 项。
-- `wechat-profile --test media_write`：5 项。
-- `wechat-profile --test mmkv_write`：4 项。
-- `wechat-store --test preservation`：2 项。
-- `wechat-store --test storage`：3 项。
+应用测试使用模拟模型接口；可选语音测试验证本地转换和缓存，没有调用真实语音合成服务。FFmpeg 是显式配置的外部依赖，包管理器使用本机下载缓存。这里的“干净目录”指重新安装源码依赖且没有私人运行状态，不是未安装任何开发工具的新操作系统。
 
-补充调查：使用 Windows 规范化的临时目录后，`mmkv_write` 6 项与 `login_storage` 9 项全部通过，存储绑定的路径比较也通过；这说明部分失败与测试输入路径的形式有关。媒体缓存、文件导入和恢复仍有失败，不能据此宣称全部修复。官方客户端接管在代码中明确只支持 Linux，Windows 的成功路径测试不能作为该能力可用的证明。
+## 修复了什么
 
-初次视频测试环境缺少 FFprobe，之后在本地构建缓存补充了 `@ffprobe-installer/win32-x64@5.1.0`，核对下载完整性并做定向复测。最终 core 目标为 **270 通过、5 失败、1 忽略**：一个旧式视频格式检查、三个 Linux 官方客户端接管流程，以及一个保存登录路由的预期未通过。`media_write` 在另一组规范化路径复测中为 12 通过、6 失败，`storage` 为 8 通过、2 失败，`preservation` 为 7 通过、2 失败。不同环境的定向测试不能相加冒充新一轮全量结果。
+前一轮原生全量结果是 765 通过、27 失败、1 忽略。本次复现并处理了以下原因，未删除文件完整性、身份或发送去重检查：
 
-不要通过移除身份、路径或文件完整性校验来消除这些失败。上述兼容性问题应作为后续独立修正，并重新运行完整测试。Windows GNU 编译应使用普通的临时目录路径；给测试进程使用的 `\\?\` 路径形式不适合直接传给 GCC。
+- 媒体缓存的内部 Windows 路径使用反斜杠，被面向配置字符串的校验误拒绝。现在先转换分隔符再验证，继续拒绝越界、绝对路径、Windows 数据流及链接跳转。
+- 保存登录状态的目标文件用字符串比较，Windows 原生路径与正斜杠常量不相等。改为比较路径组成，仍只允许指定的 global_config。
+- 文件复制后用只读句柄刷新，在 Windows 报拒绝访问；改用已有的平台文件刷新函数。
+- 恢复备份目录发布时，自己仍持有目录内文件句柄，Windows 拒绝重命名；完成校验后关闭备份副本句柄，原数据库的身份和变更检查保留。
+- MJPEG 源的全范围色彩在当前 FFmpeg 下传入输出，导致目标格式校验失败；现在明确转换为规定的有限范围后编码，不放宽格式、时长和大小限制。
+- 需要规范化路径的测试改用规范化的临时目录；路径断言比较规范化结果。没有修改正式代码的目录跳转防护来适配测试。
+- 从 npm 启动的 PowerShell 在本机无法找到 `Get-FileHash`，曾导致构建后的校验值记录失败；改用内置 .NET SHA-256，完整构建命令及独立校验随后通过。
+
+先前的缺少 FFprobe、Windows Perl/OpenSSL 组合及新测试的编译错误也已记录并处理。最终通过的检查与中间失败尝试分别记录在[本次变更日志](change-log/CA-20261117-164806-265ee915.md)。
 
 ## 发布边界
 
-这是可审查的源码候选包。应用层测试和原生编译成功，不替代新安装的真实登录、收发、手机显示与多平台验收。候选包不含开发者的现成登录环境、模型服务、图库、人物记忆、临时修复路由或构建缓存。
+本次只验证隔离源码副本。没有登录真实微信、发送群消息、操作朋友圈、改动网络配置或替换运行中的 Agent；真实账号、手机显示与模型服务仍需在使用者自己的配置下验收。
 
-新仓库没有导入旧 Git 历史。本地初始候选提交使用维护者确认的 `Rakon <222187983+Rakon906@users.noreply.github.com>`，没有使用私人邮箱；尚未推送或公开发布。
+新仓库没有导入旧 Git 历史，提交使用维护者确认的 noreply 邮箱。源码包不含私人配置、图库、聊天、人物记忆、Cookie、密钥、构建缓存或安装后的依赖；尚未推送或公开发布。
