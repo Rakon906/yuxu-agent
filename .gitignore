@@ -6,6 +6,7 @@
 /dist/
 /coverage/
 /.change-audit-backups/
+/docs/change-log/
 /node-v*-win-*/
 /Yuxu-*.exe
 /SocioMem-*.exe

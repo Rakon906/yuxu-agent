@@ -2,9 +2,9 @@
 
 `native/wechat/packages/native-client-rust/` 是完整 Rust 工作区，包含本项目使用的表情、拍一拍、朋友圈及图像发送扩展。它以 agent-wechat v1.3.2 为基础，保留上游许可和来源。不要用上游基础二进制替换它后仍期待所有扩展可用。
 
-Windows x64 开发环境需要 Rust 1.93.1、对应 C/C++ 编译器和 Perl；SQLCipher/OpenSSL 与 SILK 的构建也需要这些组件。GNU 工具链使用 MinGW-w64；MSVC 环境需要相应 Visual Studio Build Tools。不能将某一种本机工具链的成功理解为另一种也已验证。
+Windows x64 开发环境需要 Rust 1.93.1、对应 C/C++ 编译器和 Perl；SQLCipher/OpenSSL 与 SILK 的构建也需要这些组件。GNU 工具链使用 MinGW-w64；MSVC 环境需要相应 Visual Studio Build Tools。
 
-本次验证使用 Windows GNU 工具链及 Strawberry Perl 附带的 OpenSSL 静态库。在这一环境下，设置下面两个变量后构建；其他环境应指向自己工具链兼容的 OpenSSL，或使用能够构建 OpenSSL 的对应 Perl/编译器组合：
+使用 Windows GNU 工具链及 Strawberry Perl 附带的 OpenSSL 静态库时，设置下面两个变量后构建；其他环境应指向自己工具链兼容的 OpenSSL，或使用能够构建 OpenSSL 的对应 Perl/编译器组合：
 
 ```powershell
 $env:OPENSSL_NO_VENDOR = '1'
@@ -23,9 +23,9 @@ npm.cmd run launchers:build
 
 Windows 启动器由 `tools/startup/Program.cs` 和 `tools/wechat-start/Program.cs` 构建，使用系统 .NET Framework 编译器。源码发行版不包含开发者电脑上构建的 EXE，也不携带登录资料。
 
-开发验证：
+开发检查：
 
-媒体测试还需要 `ffmpeg` 和 `ffprobe` 均在 PATH 中。仅安装 FFmpeg 可执行文件而没有 FFprobe 时，视频测试会报 `media_encoder_unavailable`。本次 Windows 测试结果见 [验证记录](validation.md)。Linux 专用的官方客户端接管成功用例在 Linux 执行；Windows 验证其拒绝操作和保留资料的行为。
+媒体测试还需要 `ffmpeg` 和 `ffprobe` 均在 PATH 中。仅安装 FFmpeg 可执行文件而没有 FFprobe 时，视频测试会报 `media_encoder_unavailable`。Linux 专用的官方客户端接管用例需在 Linux 执行。
 
 ```powershell
 cargo fmt --all --check --manifest-path native/wechat/packages/native-client-rust/Cargo.toml
