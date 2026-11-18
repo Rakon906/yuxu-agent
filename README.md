@@ -14,24 +14,70 @@
 
 一个具有长期记忆、人物关系和自主参与能力的微信群聊 Agent。默认角色是“肥鱼不肥”，可以替换人设，也可以接入自己的云端或本地模型。
 
-这是公开源码版本，包含代码、合成测试样例与展示素材。开发者的微信账号、聊天记录、Cookie、API Key、人物档案、私人图库和旧项目 Git 历史不随仓库发布。每位使用者需要配置自己的账号和模型服务。
-
 应用层离线测试和当前 Windows 原生测试已通过，干净目录的安装、演示与启动器也已验证。具体结果和平台边界见[验证记录](docs/validation.md)；离线验证不替代使用者自己账号的真实登录和收发验收。
 
 ## 功能
 
-![鱼叙功能概览：自然参与、长期记忆、人物关系、多媒体理解、微信互动和模型配置](docs/assets/yuxu-overview.svg)
+从接上一句闲聊，到记得聊过的事，再到主动分享近况。
 
-| 模块 | 内容 |
-| --- | --- |
-| 群聊 | 多群隔离、参与判断、点名/@/拍一拍回应、主动话题、发送前复核与去重 |
-| 记忆 | 消息 Inbox、容量触发的滚动日记、Mem0 与 SQLite、相关记忆检索 |
-| 人物关系 | 稳定身份与昵称映射、有来源的人物观察、兴趣标签、亲密度、相处偏好、关系与活动记录 |
-| 多媒体 | 图片/表情理解和内容缓存、语音转写、普通短视频抽帧和转写、分享正文、合并转发 |
-| 发送 | 文字、高清图片、类型 47 表情、语音、引用回复、@、拍一拍 |
-| 朋友圈 | 同一登录态下的时间线和图片读取、图文发布、选题调度、点赞评论及评论回复、近况记忆 |
-| 兴趣 | 跨天事项跟进、共同兴趣订阅、可选热点来源和新梗学习 |
-| 运维 | 模型路由、逐次调用与 Token 统计、进程守护、30 分钟在线检查、Windows 启动器 |
+<table>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/chat.svg" width="40" height="40" alt="" />
+      <h3>自然参与群聊</h3>
+      <p>有人找时接话，有话题时冒个泡，也懂得安静。</p>
+      <p>参与时机判断 · 点名 / @ / 拍一拍回应<br />主动开话题 · 多群隔离 · 发送前复核与去重</p>
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/memory.svg" width="40" height="40" alt="" />
+      <h3>把聊过的事记下来</h3>
+      <p>过些天再提起，也能找回之前聊到的事情。</p>
+      <p>容量触发的滚动日记 · 相关记忆检索<br />Mem0 + SQLite · 保留来源与人物关联</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/people.svg" width="40" height="40" alt="" />
+      <h3>逐渐熟悉每位群友</h3>
+      <p>记住称呼、兴趣和相处偏好，慢慢积累对彼此的了解。</p>
+      <p>稳定身份与昵称映射 · 有来源的人物观察<br />兴趣标签 · 亲密度 · 关系与活动记录</p>
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/media.svg" width="40" height="40" alt="" />
+      <h3>看图、听语音、读分享</h3>
+      <p>接上图片、表情和语音里的话题，读懂更多聊天内容。</p>
+      <p>图片 / 表情理解与缓存 · 语音转写<br />普通视频有限抽帧与转写 · 分享正文 · 合并转发</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/interact.svg" width="40" height="40" alt="" />
+      <h3>不只有文字回复</h3>
+      <p>发张表情，回段语音，或者引用原话接着聊。</p>
+      <p>文字 · 高清图片 · 原生表情 · 语音<br />引用回复 · @ 群友 · 拍一拍</p>
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/moments.svg" width="40" height="40" alt="" />
+      <h3>也有自己的朋友圈</h3>
+      <p>分享近况，也看看朋友们最近在做什么。</p>
+      <p>同一登录态读取动态与图片 · 图文发布<br />选题调度 · 点赞评论与回复 · 近况记忆</p>
+    </td>
+  </tr>
+  <tr>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/interests.svg" width="40" height="40" alt="" />
+      <h3>让共同话题延续下去</h3>
+      <p>一起关注感兴趣的事，也记得还没聊完的约定。</p>
+      <p>跨天事项跟进 · 共同兴趣订阅<br />可选热点来源 · 新梗学习</p>
+    </td>
+    <td width="50%" valign="top">
+      <img src="docs/assets/features/models.svg" width="40" height="40" alt="" />
+      <h3>按自己的方式运行</h3>
+      <p>换一个人设，选合适的模型，看得见每次调用。</p>
+      <p>云端 / 本地模型路由 · 调用与 Token 统计<br />进程守护 · 在线检查 · Windows 启动器</p>
+    </td>
+  </tr>
+</table>
 
 功能边界见 [功能说明](docs/features.md)。代码和离线测试存在不代表任意微信版本、模型或网络环境都已完成真实验收。
 
